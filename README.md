@@ -1,6 +1,7 @@
 # YouTube-Thumbnail-Generator
-Prerequisites:
-You must first install the following modules for the program to run
+# Prerequisites:
+
+# You must first install the following modules for the program to run
 
 To install Tkinter in Arch:
 sudo pacman -S tk
