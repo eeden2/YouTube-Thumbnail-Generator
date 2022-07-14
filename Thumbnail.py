@@ -81,7 +81,7 @@ class userInput:
         return
     
     #Method made to orgnaize all the parts to be centered through the grid method
-    def hitTheGriddy():
+    def hitTheGriddy(self):
         label2.grid(row=0, column=2,pady=2)
         entryLabel2.grid(row=1,column=2, pady=4)
         whatText.grid(row=3,column=2,pady=2)
@@ -90,7 +90,7 @@ class userInput:
        
         
     
-    def userUploadImage():
+    def userUploadImage(self):
         global times
         
         #Sets up and asks user to upload their image
@@ -154,7 +154,7 @@ class userInput:
         tab2.config(bg='blue')
         app.mainloop()
         
-    def gifTab2():
+    def gifTab2(self):
         userInput.userUploadImage()
         makingImage.runGIF("frog_left.gif","frog_right.gif")
         
@@ -259,7 +259,7 @@ class makingImage():
         txted_img = theEngine.putText(raw_img, text, pos, theEngine.FONT_HERSHEY_DUPLEX, txt_scale, (255, 255, 255), int(line_width), theEngine.LINE_AA)
         return txted_img
 
-    def get_text():
+    def get_text(self):
         ender_list = ['', '!', '!!!', '?', '??', '!?', '!??', '..!', '...'] 
         r = requests.post(
             "https://api.deepai.org/api/text-generator",
@@ -356,7 +356,7 @@ class makingImage():
         lbl.grid(row=0,column=1,pady=2)
         return
     
-    def makeImage():
+    def makeImage(self):
         
         makingImage.runGIF("frog_left.gif","frog_right.gif")
         print('working')
@@ -414,7 +414,7 @@ class makingImage():
         app.mainloop()
         
     
-    def saveFile():
+    def saveFile(self):
         filename = filedialog.asksaveasfile(mode='w', defaultextension=".jpg")
         global saveImage
         if not filename:
