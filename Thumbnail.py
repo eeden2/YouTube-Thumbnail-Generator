@@ -22,8 +22,8 @@ from PIL import Image, ImageTk, ImageSequence
 import urllib3
 from itertools import count, cycle
 
-
-thumbnail_resolution = (460,360)
+#Setup for the main variables that host all the individual parts such as inputs and buttons
+thumbnail_resolution = (640,360)
 text = ''
 app = Tk()
 app.title("Generate Memez")
@@ -80,6 +80,7 @@ class userInput:
         userInput.hitTheGriddy()
         return
     
+    #Method made to orgnaize all the parts to be centered through the grid method
     def hitTheGriddy():
         label2.grid(row=0, column=2,pady=2)
         entryLabel2.grid(row=1,column=2, pady=4)
@@ -92,6 +93,7 @@ class userInput:
     def userUploadImage():
         global times
         
+        #Sets up and asks user to upload their image
         filetypes =(('JPEG File', '*.jpg'),('PNG File', '*.png'))
         userImage = theEngine.imread(filedialog.askopenfile(filetypes=filetypes).name)
         arrows = 1
@@ -108,21 +110,28 @@ class userInput:
             text = textEntry.get()
         saveBtn = Button (tab2, text = "Save the Image Bro", command = makingImage.saveFile, width = 20)
         saveBtn.grid(row=7,column=2,pady=2)
+        #times is to reset the image display and ensure that the current image is what is saved via the button
         if times >0:
             label.config(image='') 
             saveBtn.destroy() 
             label.grid(row=0, column=1, pady=2)
             
+        #Firstly, the image is cropped in accord with the predetermined resolution earlier
         cropped_img = makingImage.crop_image(userImage)
                        
 
+        #Find the densest region of keypoints in the ORB Algorithm
+        #Then we create a circle around that area and save it to an image
         densest = makingImage.get_densest(makingImage.get_kp(cropped_img))            
         print('Densest Point is at: ' + str(densest))
+        
+        #This draws an arrow that points to the circle, further employing the randomness that is expected
         circled_img = makingImage.draw_shapes(cropped_img, densest,arrows)
             
         x_length = circled_img.shape[1]
+        #Setup for the font and then put the text on an image with the circle
         txt_scale, txt_height = makingImage.get_font_scale(makingImage.get_text(), x_length)
-        if densest[1] > circled_img.shape[0] / 2:
+        if densest[1][0] > circled_img.shape[0] / 2:
             pos = (0, txt_height + int(.07 * circled_img.shape[0]))
         else:
             pos = (0,  + circled_img.shape[0] - int(.07 * circled_img.shape[0]))            
@@ -130,6 +139,7 @@ class userInput:
         txted_img = theEngine.putText(circled_img, text, pos, theEngine.FONT_HERSHEY_DUPLEX, txt_scale, (0, 0 ,0), int(line_width * 4), theEngine.LINE_AA)
         txted_img = theEngine.putText(circled_img, text, pos, theEngine.FONT_HERSHEY_DUPLEX, txt_scale, (255, 255, 255), int(line_width), theEngine.LINE_AA)
             
+        
         blue,green,red = theEngine.split(txted_img)
         firstStep = theEngine.merge((red,green,blue))
         secondStep= Image.fromarray(firstStep)
@@ -379,7 +389,7 @@ class makingImage():
        
         
         x_length = circled_img.shape[1]
-        txt_scale, txt_height = makingImage.get_font_scale(makingImage.get_text(), x_length)
+        txt_scale, txt_height = makingImage.get_font_scale(text, x_length)
         if densest[0][1] > circled_img.shape[0] / 2:
             pos = (0, txt_height + int(.07 * circled_img.shape[0]))
         else:
